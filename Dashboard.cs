@@ -23,7 +23,6 @@ namespace DashboardUI
         Text speed;
         CanvasGroup group;
 
-        //List<Tick> ticks;
         Vector2Int revThresholds;
         Func<int> GetSpeed;
         Func<int> GetRev;
@@ -78,14 +77,13 @@ namespace DashboardUI
                 unit.text = units;
                 speed = transform.GetChild(3).GetComponent<Text>();
 
-                //ticks = new List<Tick>();
                 int ticksCount = (revThresholds.y - revThresholds.x) / 1000;
 
                 for (int i = 0; i <= ticksCount; i++)
                 {
                     Tick tick = new Tick(Instantiate(tickPrefab.transform, tickHolder), i + 1);
                     tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, (float)i / ticksCount));
-                    //ticks.Add(tick);
+                    tick.FixDisplay();
                 }
 
                 limiter.fillAmount = (float)1 / ticksCount;
@@ -112,12 +110,16 @@ namespace DashboardUI
         {
             public Transform transform;
 
+            Text display;
+
             public Tick(Transform transform, int level)
             {
                 this.transform = transform;
-
-                transform.GetComponentInChildren<Text>().text = level.ToString();
+                display = transform.GetComponentInChildren<Text>();
+                display.text = level.ToString();
             }
+
+            public void FixDisplay() => display.transform.localRotation = Quaternion.Euler(0, 0, -transform.localEulerAngles.z);
         }
     }
 }
