@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 260562765
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: dashboard_ui
+      Dependencies: {}
