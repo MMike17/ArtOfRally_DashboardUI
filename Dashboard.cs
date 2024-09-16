@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +23,7 @@ namespace DashboardUI
         Text speed;
         CanvasGroup group;
 
-        List<Tick> ticks;
+        //List<Tick> ticks;
         Vector2Int revThresholds;
         Func<int> GetSpeed;
         Func<int> GetRev;
@@ -79,14 +78,14 @@ namespace DashboardUI
                 unit.text = units;
                 speed = transform.GetChild(3).GetComponent<Text>();
 
-                ticks = new List<Tick>();
+                //ticks = new List<Tick>();
                 int ticksCount = (revThresholds.y - revThresholds.x) / 1000;
 
                 for (int i = 0; i <= ticksCount; i++)
                 {
                     Tick tick = new Tick(Instantiate(tickPrefab.transform, tickHolder), i + 1);
                     tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, (float)i / ticksCount));
-                    ticks.Add(tick);
+                    //ticks.Add(tick);
                 }
 
                 limiter.fillAmount = (float)1 / ticksCount;
@@ -98,9 +97,13 @@ namespace DashboardUI
             if (instance == null)
                 return;
 
-            //
+            float revPercent = Mathf.InverseLerp(revThresholds.x, revThresholds.y, GetRev());
+            dial.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, revPercent));
+
+            speed.text = Mathf.CeilToInt(GetSpeed()).ToString();
         }
 
+        // TODO : Add color set mapping for color swapping
         // TODO : Add method to set colors
         // TODO : Add method to update units
         // TODO : Add method to update gear
