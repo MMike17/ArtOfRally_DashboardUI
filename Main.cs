@@ -1,6 +1,8 @@
 using HarmonyLib;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine;
 using UnityModManagerNet;
 
 using static UnityModManagerNet.UnityModManager;
@@ -13,6 +15,9 @@ namespace DashboardUI
 
         public static ModEntry.ModLogger Logger;
         public static Settings settings;
+
+        static List<GameObject> markers;
+        static Material markerMat;
 
         // Called by the mod manager
         static bool Load(ModEntry modEntry)
