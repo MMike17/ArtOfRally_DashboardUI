@@ -3,7 +3,7 @@ using UnityModManagerNet;
 
 using static UnityModManagerNet.UnityModManager;
 
-namespace ModBase
+namespace DashboardUI
 {
     public class Settings : ModSettings, IDrawable
     {

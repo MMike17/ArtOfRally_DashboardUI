@@ -1,11 +1,11 @@
 {
-	"Id": "ModBase",
-	"DisplayName": "ModBase",
+	"Id": "DashboardUI",
+	"DisplayName": "DashboardUI",
 	"Author": "MMike17",
 	"Version": "1.0.0",
 	"GameVersion": "1.5,5",
-	"AssemblyName": "ModBase.dll",
-	"EntryMethod": "ModBase.Main.Load",
+	"AssemblyName": "DashboardUI.dll",
+	"EntryMethod": "DashboardUI.Main.Load",
 	"HomePage": "<modHomepageLink>",
-	"Repository": "<modRepoLink>"
+	"Repository": "https://github.com/MMike17/ArtOfRally_DashboardUI"
 }

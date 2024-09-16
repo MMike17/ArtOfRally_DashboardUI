@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace ModBase
+namespace DashboardUI
 {
 	// Patch model
 	// [HarmonyPatch(typeof(), nameof())]
