@@ -27,4 +27,5 @@ namespace DashboardUI
     // TODO : Plug into menu animations
     // TODO : Add positionning and scale settings
     // TODO : Call Dashboard.UpdateUnits in patch
+    // TODO : Call Dashboard.UpdateGear in patch
 }

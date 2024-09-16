@@ -129,7 +129,6 @@ namespace DashboardUI
             speed.text = Mathf.CeilToInt(GetSpeed()).ToString();
         }
 
-        // TODO : Add method to update units
         // TODO : Add method to update gear
 
         public static void RefreshColors()
@@ -162,6 +161,14 @@ namespace DashboardUI
                 return;
 
             instance.unit.text = units;
+        }
+
+        public static void UpdateGear(int gear)
+        {
+            if (instance == null)
+                return;
+
+            instance.gear.text = gear.ToString();
         }
 
         class Tick
