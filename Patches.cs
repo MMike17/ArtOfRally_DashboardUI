@@ -20,11 +20,11 @@ namespace DashboardUI
 
     // TODO : Make Left dashboard asset in Unity
     // TODO : Make Center dashboard asset in Unity
-    // TODO : Export asset bundles
     // TODO : Load asset bundle
     // TODO : Spawn UI on start of game
     // TODO : Plug values into dashboard UI
     // TODO : Hide game's dahsboard UI
     // TODO : Plug into menu animations
     // TODO : Add positionning and scale settings
+    // TODO : Call Dashboard.UpdateUnits in patch
 }

@@ -62,11 +62,12 @@ namespace DashboardUI
             FieldInfo testInfo = entry.GetType().GetField("eventManager", BindingFlags.Static | BindingFlags.NonPublic);
             yield return new WaitUntil(() => testInfo.GetValue(entry) != null);
 
-            Init(units);
+            Init();
             RefreshColors();
+            UpdateUnits(units);
         }
 
-        void Init(string units)
+        void Init()
         {
             Main.Try(() =>
             {
@@ -84,7 +85,6 @@ namespace DashboardUI
                 pointer = dial.transform.GetComponentInChildren<Image>();
                 gear = transform.GetChild(1).GetComponent<Text>();
                 unit = transform.GetChild(2).GetComponent<Text>();
-                unit.text = units;
                 speed = transform.GetChild(3).GetComponent<Text>();
 
                 ticks = new List<Tick>();
@@ -154,6 +154,14 @@ namespace DashboardUI
                 tick.graphic.color = tickColor;
                 tick.display.color = tickTextColor;
             });
+        }
+
+        public static void UpdateUnits(string units)
+        {
+            if (instance == null)
+                return;
+
+            instance.unit.text = units;
         }
 
         class Tick
