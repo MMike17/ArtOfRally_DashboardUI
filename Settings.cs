@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityModManagerNet;
 
-using static DashboardUI.Dashboard;
 using static UnityModManagerNet.UnityModManager;
 
 namespace DashboardUI
@@ -9,8 +8,6 @@ namespace DashboardUI
     public class Settings : ModSettings, IDrawable
     {
         readonly static Color Brown = new Color(0.75f, 0.5f, 0.25f);
-
-        // [Draw(DrawType.)]
 
         public enum ColorTag
         {
@@ -26,6 +23,13 @@ namespace DashboardUI
             Brown
         }
 
+        public enum DashboardOrientation
+        {
+            Left,
+            Center,
+            Right
+        }
+
         [Draw(DrawType.PopupList)]
         public ColorTag primaryColor = ColorTag.White;
         [Draw(DrawType.PopupList)]
@@ -34,7 +38,7 @@ namespace DashboardUI
         public ColorTag pointerColor = ColorTag.Red;
         [Space]
         [Draw(DrawType.PopupList)]
-        public Orientation orientation;
+        public DashboardOrientation uiOrientation;
         [Draw(DrawType.Slider, Min = -1, Max = 1, Precision = 3)]
         public float xPositionPercent;
         [Draw(DrawType.Slider, Min = 0, Max = 1, Precision = 3)]
@@ -55,8 +59,7 @@ namespace DashboardUI
         public void OnChange()
         {
             Main.SetMarkers(showMarkers);
-
-            //
+            Dashboard.RefreshColors();
         }
 
         public static Color GetColor(ColorTag tag)

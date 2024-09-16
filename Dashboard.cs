@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace DashboardUI
 {
-    class Dashboard : MonoBehaviour
+    public class Dashboard : MonoBehaviour
     {
         const float MIN_ANGLE = 45;
         const float MAX_ANGLE = -135;
@@ -17,7 +17,6 @@ namespace DashboardUI
         // UI
         Image frame;
         Image outline;
-        Image fill;
         Image rev;
         Image limiter;
         Transform tickHolder;
@@ -64,7 +63,7 @@ namespace DashboardUI
             yield return new WaitUntil(() => testInfo.GetValue(entry) != null);
 
             Init(units);
-            // refresh values
+            RefreshColors();
         }
 
         void Init(string units)
@@ -75,12 +74,11 @@ namespace DashboardUI
 
                 frame = transform.GetComponent<Image>();
                 outline = transform.GetChild(0).GetChild(0).GetComponent<Image>();
-                fill = transform.GetChild(0).GetChild(1).GetComponentInChildren<Image>();
                 rev = transform.GetChild(0).GetChild(1).GetComponentInChildren<Image>();
                 limiter = transform.GetChild(0).GetChild(2).GetComponentInChildren<Image>();
 
                 tickHolder = transform.GetChild(0).GetChild(3);
-                tickPrefab = new Tick(tickHolder.GetChild(0), 0);
+                tickPrefab = new Tick(tickHolder.GetChild(0).GetComponent<Image>(), 0);
 
                 dial = transform.GetChild(0).GetChild(4).GetComponent<Image>();
                 pointer = dial.transform.GetComponentInChildren<Image>();
@@ -94,7 +92,7 @@ namespace DashboardUI
 
                 for (int i = 0; i <= ticksCount; i++)
                 {
-                    Tick tick = new Tick(Instantiate(tickPrefab.transform, tickHolder), i + 1);
+                    Tick tick = new Tick(Instantiate(tickPrefab.graphic, tickHolder), i + 1);
                     tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, (float)i / ticksCount));
                     tick.FixDisplay();
 
@@ -109,10 +107,9 @@ namespace DashboardUI
 
                 colorMap.Add(nameof(frame), new SVAColor(frame));
                 colorMap.Add(nameof(outline), new SVAColor(outline));
-                colorMap.Add(nameof(fill), new SVAColor(fill));
                 colorMap.Add(nameof(rev), new SVAColor(rev));
-                colorMap.Add(nameof(limiter), new SVAColor(limiter));
-                colorMap.Add(nameof(tickPrefab), new SVAColor(tickPrefab.transform.GetComponent<Image>()));
+                colorMap.Add(nameof(tickPrefab.graphic), new SVAColor(tickPrefab.graphic));
+                colorMap.Add(nameof(tickPrefab.display), new SVAColor(tickPrefab.display));
                 colorMap.Add(nameof(dial), new SVAColor(dial));
                 colorMap.Add(nameof(pointer), new SVAColor(pointer));
                 colorMap.Add(nameof(gear), new SVAColor(gear));
@@ -132,20 +129,45 @@ namespace DashboardUI
             speed.text = Mathf.CeilToInt(GetSpeed()).ToString();
         }
 
-        // TODO : Add method to set colors
         // TODO : Add method to update units
         // TODO : Add method to update gear
+
+        public static void RefreshColors()
+        {
+            if (instance == null)
+                return;
+
+            instance.frame.color = instance.colorMap[nameof(instance.frame)].Apply(Settings.GetColor(Main.settings.primaryColor));
+            instance.outline.color = instance.colorMap[nameof(instance.outline)].Apply(Settings.GetColor(Main.settings.primaryColor));
+            instance.rev.color = instance.colorMap[nameof(instance.rev)].Apply(Settings.GetColor(Main.settings.secondaryColor));
+            instance.dial.color = instance.colorMap[nameof(instance.dial)].Apply(Settings.GetColor(Main.settings.primaryColor));
+            instance.pointer.color = instance.colorMap[nameof(instance.pointer)].Apply(Settings.GetColor(Main.settings.pointerColor));
+            instance.gear.color = instance.colorMap[nameof(instance.gear)].Apply(Settings.GetColor(Main.settings.secondaryColor));
+            instance.unit.color = instance.colorMap[nameof(instance.)].Apply(Settings.GetColor(Main.settings.primaryColor));
+            instance.speed.color = instance.colorMap[nameof(instance.)].Apply(Settings.GetColor(Main.settings.primaryColor));
+
+            Color tickColor = instance.colorMap[nameof(instance.tickPrefab.graphic)].Apply(Settings.GetColor(Main.settings.primaryColor));
+            Color tickTextColor = instance.colorMap[nameof(instance.tickPrefab.display)].Apply(Settings.GetColor(Main.settings.primaryColor));
+
+            instance.ticks.ForEach(tick =>
+            {
+                tick.graphic.color = tickColor;
+                tick.display.color = tickTextColor;
+            });
+        }
 
         class Tick
         {
             public Transform transform;
+            public Image graphic;
+            public Text display;
 
-            Text display;
-
-            public Tick(Transform transform, int level)
+            public Tick(Image graphic, int level)
             {
-                this.transform = transform;
-                display = transform.GetComponentInChildren<Text>();
+                this.graphic = graphic;
+                transform = graphic.transform;
+
+                display = graphic.GetComponentInChildren<Text>();
                 display.text = level.ToString();
             }
 
