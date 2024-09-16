@@ -85,12 +85,18 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Patches.cs" />
   </ItemGroup>
+  <ItemGroup>
+	<Assets Include="$(ProjectDir)Assets\**\*.*"/>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CopyInfo" AfterTargets="BeforeBuild">
     <Copy SourceFiles="Info.json" DestinationFolder="D:\SteamLibrary\steamapps\common\artofrally\Mods\DashboardUI" />
   </Target>
   <Target Name="CopyDll" AfterTargets="Build">
     <Copy SourceFiles="bin\Debug\DashboardUI.dll" DestinationFolder="D:\SteamLibrary\steamapps\common\artofrally\Mods\DashboardUI" />
+  </Target>
+  <Target Name="CopyAssets" AfterTargets="Build">
+	<Copy SourceFiles="@(Assets)" DestinationFolder="D:\SteamLibrary\steamapps\common\artofrally\Mods\DashboardUI" />
   </Target>
   <Target Name="StartGame" AfterTargets="AfterBuild">
     <Exec Command="&quot;D:\Games\Current\art of rally.url&quot;" />
