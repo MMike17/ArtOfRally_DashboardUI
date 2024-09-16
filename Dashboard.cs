@@ -143,8 +143,8 @@ namespace DashboardUI
             instance.dial.color = instance.colorMap[nameof(instance.dial)].Apply(Settings.GetColor(Main.settings.primaryColor));
             instance.pointer.color = instance.colorMap[nameof(instance.pointer)].Apply(Settings.GetColor(Main.settings.pointerColor));
             instance.gear.color = instance.colorMap[nameof(instance.gear)].Apply(Settings.GetColor(Main.settings.secondaryColor));
-            instance.unit.color = instance.colorMap[nameof(instance.)].Apply(Settings.GetColor(Main.settings.primaryColor));
-            instance.speed.color = instance.colorMap[nameof(instance.)].Apply(Settings.GetColor(Main.settings.primaryColor));
+            instance.unit.color = instance.colorMap[nameof(instance.unit)].Apply(Settings.GetColor(Main.settings.primaryColor));
+            instance.speed.color = instance.colorMap[nameof(instance.speed)].Apply(Settings.GetColor(Main.settings.primaryColor));
 
             Color tickColor = instance.colorMap[nameof(instance.tickPrefab.graphic)].Apply(Settings.GetColor(Main.settings.primaryColor));
             Color tickTextColor = instance.colorMap[nameof(instance.tickPrefab.display)].Apply(Settings.GetColor(Main.settings.primaryColor));
