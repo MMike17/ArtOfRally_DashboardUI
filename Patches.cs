@@ -17,4 +17,14 @@ namespace DashboardUI
 	// 		//
 	// 	}
 	// }
+
+	// TODO : Make assets for the dashboard in Unity
+	// TODO : Export asset bundles
+	// TODO : Add resources injection in csproj
+	// TODO : Load asset bundle
+	// TODO : Spawn UI on start of game
+	// TODO : Plug values into dashboard UI
+	// TODO : Hide game's dahsboard UI
+	// TODO : Plug into menu animations
+	// TODO : Add positionning and scale settings
 }
