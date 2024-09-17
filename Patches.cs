@@ -2,22 +2,6 @@ using HarmonyLib;
 
 namespace DashboardUI
 {
-    // Patch model
-    // [HarmonyPatch(typeof(), nameof())]
-    // [HarmonyPatch(typeof(), MethodType.)]
-    // static class type_method_Patch
-    // {
-    // 	static void Prefix()
-    // 	{
-    // 		//
-    // 	}
-
-    // 	static void Postfix()
-    // 	{
-    // 		//
-    // 	}
-    // }
-
     [HarmonyPatch(typeof(StageSceneManager), MethodType.Constructor)]
     static class UISpawner
     {
@@ -39,12 +23,31 @@ namespace DashboardUI
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.ShowStageHud))]
     static class ShowAnimator
     {
-        static void Postfix()
+        static HudManager manager;
+
+        static void Postfix(HudManager __instance)
         {
             if (!Main.enabled)
                 return;
 
-            Main.Try(() => Dashboard.PlayAnimation(true));
+            manager = __instance;
+
+            Main.Try(() =>
+            {
+                __instance.SpeedoHudGroup.gameObject.SetActive(false);
+                __instance.RPMHudGroup.gameObject.SetActive(false);
+
+                Dashboard.PlayAnimation(true);
+            });
+        }
+
+        public static void SetHUDState(bool state)
+        {
+            if (manager == null)
+                return;
+
+            manager.SpeedoHudGroup.gameObject.SetActive(!state);
+            manager.RPMHudGroup.gameObject.SetActive(!state);
         }
     }
 
@@ -59,7 +62,4 @@ namespace DashboardUI
             Main.Try(() => Dashboard.PlayAnimation(false));
         }
     }
-
-    // TODO : Add conditions to show/enable ui
-    // TODO : Hide game's dahsboard UI
 }

@@ -70,6 +70,7 @@ namespace DashboardUI
             if (currentDashboard != null)
                 currentDashboard.gameObject.SetActive(state);
 
+            ShowAnimator.SetHUDState(enabled);
             return true;
         }
 
