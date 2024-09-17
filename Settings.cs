@@ -47,7 +47,7 @@ namespace DashboardUI
         public float uiScale = 0.58f;
 
         [Header("Debug")]
-        [Draw(DrawType.Toggle)]
+        //[Draw(DrawType.Toggle)]
         public bool showMarkers = false;
         [Draw(DrawType.Toggle)]
         public bool disableInfoLogs = true;
