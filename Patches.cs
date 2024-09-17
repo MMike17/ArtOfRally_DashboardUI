@@ -24,10 +24,16 @@ namespace DashboardUI
         static void Postfix() => Main.Try(() => Main.SpawnUI());
     }
 
-    // TODO : Plug values into dashboard UI
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.RefreshHudElements))]
+    static class UnitsUpdater
+    {
+        static void Postfix() => Main.Try(() => Dashboard.UpdateUnits(SaveGame.GetInt("SETTINGS_SPEED_UNITS", 0) == 0 ? "mph" : "kmp"));
+    }
+
+    // TODO : Add conditions to show/enable ui
+    // TODO : Plug into gear change
     // TODO : Hide game's dahsboard UI
     // TODO : Plug into menu animations
-    // TODO : Add positionning and scale settings
     // TODO : Call Dashboard.UpdateUnits in patch
     // TODO : Call Dashboard.UpdateGear in patch
 }
