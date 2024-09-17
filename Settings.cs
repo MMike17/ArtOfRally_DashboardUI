@@ -93,7 +93,7 @@ namespace DashboardUI
 
         public static Vector2 GetScreenPos()
         {
-            return new Vector2(Screen.width * Main.settings.xPositionPercent, Screen.height * Main.settings.yPositionPercent);
+            return new Vector2(Screen.width * Main.settings.xPositionPercent / 2, Screen.height * Main.settings.yPositionPercent);
         }
     }
 }

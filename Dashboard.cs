@@ -43,7 +43,6 @@ namespace DashboardUI
         // TODO : Fix rev fill
         // TODO : Fix rev counter positionning
         // TODO : Fix shifting
-        // TODO : Fix start at 0 scale
         // TODO : Fix pointer color set not working
 
         public void Init(HudManager hud)
@@ -82,6 +81,9 @@ namespace DashboardUI
             RefreshColors();
             RefreshPosition();
             UpdateUnits();
+
+            // force set this
+            group.alpha = GameEntryPoint.EventManager.status == EventStatusEnums.EventStatus.UNDERWAY ? 1 : 0;
         }
 
         void GetRefs()

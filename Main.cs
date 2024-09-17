@@ -183,7 +183,7 @@ namespace DashboardUI
             }
 
             if (currentDashboard != null)
-                GameObject.Destroy(currentDashboard);
+                GameObject.Destroy(currentDashboard.gameObject);
 
             GameObject prefab = null;
 
@@ -218,6 +218,8 @@ namespace DashboardUI
                 Dashboard.RefreshColors();
                 Dashboard.RefreshPosition();
             }
+
+            orientation = settings.uiOrientation;
         }
     }
 }
