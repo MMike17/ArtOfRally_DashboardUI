@@ -11,6 +11,8 @@ namespace DashboardUI
     {
         float minAngle => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 120 : 45;
         float maxAngle => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? -120 : -135;
+        float minFill => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 0.164f : 0;
+        float maxFill => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 0.837f : 0.5f;
 
         static Dashboard instance;
 
@@ -35,12 +37,17 @@ namespace DashboardUI
         Func<float> GetSpeed;
         Func<float> GetRev;
 
+        bool initialized;
+
         public void Init(HudManager hud)
         {
             instance = this;
             this.hud = hud;
 
             StartCoroutine(InitWhenReady());
+
+            if (!Main.enabled)
+                gameObject.SetActive(false);
         }
 
         IEnumerator InitWhenReady()
@@ -65,6 +72,8 @@ namespace DashboardUI
             RefreshColors();
             RefreshPosition();
             UpdateUnits();
+
+            initialized = true;
         }
 
         void GetRefs()
@@ -128,7 +137,7 @@ namespace DashboardUI
 
         void LateUpdate()
         {
-            if (instance == null)
+            if (!initialized)
                 return;
 
             float revPercent = Mathf.InverseLerp(revThresholds.x, revThresholds.y, GetRev());
@@ -139,7 +148,7 @@ namespace DashboardUI
 
         public static void RefreshColors()
         {
-            if (instance == null)
+            if (instance == null || !instance.initialized)
                 return;
 
             instance.frame.color = instance.colorMap[nameof(instance.frame)].Apply(Settings.GetColor(Main.settings.primaryColor));
@@ -163,7 +172,7 @@ namespace DashboardUI
 
         public static void RefreshPosition()
         {
-            if (instance == null)
+            if (instance == null || !instance.initialized)
                 return;
 
             instance.transform.position = Settings.GetScreenPos();
@@ -172,15 +181,16 @@ namespace DashboardUI
 
         public static void UpdateUnits()
         {
-            if (instance == null)
+            if (instance == null || !instance.initialized)
                 return;
 
+            Main.Log("Instance : " + (instance != null) + "\nunit : " + (instance.unit != null));
             instance.unit.text = SaveGame.GetInt("SETTINGS_SPEED_UNITS", 0) == 0 ? "mph" : "kmh";
         }
 
         public static void UpdateGear(string gear)
         {
-            if (instance == null)
+            if (instance == null || !instance.initialized)
                 return;
 
             instance.gear.text = gear;
@@ -188,7 +198,7 @@ namespace DashboardUI
 
         public static void PlayAnimation(bool fadeIn)
         {
-            if (instance == null)
+            if (instance == null || !instance.initialized)
                 return;
 
             LeanTween.alphaCanvas(instance.group, fadeIn ? 1 : 0, 0.3f).setEaseOutSine().setIgnoreTimeScale(true);
