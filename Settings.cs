@@ -59,8 +59,7 @@ namespace DashboardUI
         public void OnChange()
         {
             Main.SetMarkers(showMarkers);
-            Dashboard.RefreshColors();
-            Dashboard.RefreshPosition();
+            Main.RefreshUI();
         }
 
         public static Color GetColor(ColorTag tag)

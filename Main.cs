@@ -23,6 +23,7 @@ namespace DashboardUI
         static GameObject rightDashboard;
         static GameObject centerDashboard;
         static Dashboard currentDashboard;
+        static Settings.DashboardOrientation orientation;
 
         // Called by the mod manager
         static bool Load(ModEntry modEntry)
@@ -58,12 +59,17 @@ namespace DashboardUI
             });
 
             markers = new List<GameObject>();
+            orientation = settings.uiOrientation;
             return true;
         }
 
         static bool OnToggle(ModEntry modEntry, bool state)
         {
             enabled = state;
+
+            if (currentDashboard != null)
+                currentDashboard.gameObject.SetActive(state);
+
             return true;
         }
 
@@ -200,6 +206,17 @@ namespace DashboardUI
 
             if (!settings.disableInfoLogs)
                 Log("Spawned dashboard UI");
+        }
+
+        public static void RefreshUI()
+        {
+            if (settings.uiOrientation != orientation)
+                SpawnUI();
+            else
+            {
+                Dashboard.RefreshColors();
+                Dashboard.RefreshPosition();
+            }
         }
     }
 }
