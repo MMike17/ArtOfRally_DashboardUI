@@ -25,13 +25,7 @@ namespace DashboardUI
             if (ui == null)
                 ui = GameObject.FindObjectOfType<RPMDisplay>();
 
-            if (ui == null)
-            {
-                Main.Error("Couldn't find RPM display. Aborting.");
-                return;
-            }
-
-            if (Dashboard.initialized)
+            if (ui != null && Dashboard.initialized)
             {
                 Main.InvokeMethod(ui, "UpdateGearDisplay", BindingFlags.Instance, new object[] { });
                 Dashboard.UpdateGear(ui.GearDisplay.text);
