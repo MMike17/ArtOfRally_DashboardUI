@@ -27,7 +27,7 @@ namespace DashboardUI
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.RefreshHudElements))]
     static class UnitsUpdater
     {
-        static void Postfix() => Main.Try(() => Dashboard.UpdateUnits(SaveGame.GetInt("SETTINGS_SPEED_UNITS", 0) == 0 ? "mph" : "kmp"));
+        static void Postfix() => Main.Try(() => Dashboard.UpdateUnits());
     }
 
     // TODO : Add conditions to show/enable ui

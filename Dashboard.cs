@@ -35,18 +35,15 @@ namespace DashboardUI
         Func<float> GetSpeed;
         Func<float> GetRev;
 
-        public void Init(Vector2 revThresholds, Func<float> GetRev, string units, HudManager hud)
+        public void Init(HudManager hud)
         {
-            this.revThresholds = revThresholds;
-            this.GetRev = GetRev;
+            instance = this;
             this.hud = hud;
 
-            GetSpeed = () => Main.GetField<float, HudManager>(hud, "digitalSpeedoVelo", BindingFlags.Instance);
-
-            StartCoroutine(InitWhenReady(units));
+            StartCoroutine(InitWhenReady());
         }
 
-        IEnumerator InitWhenReady(string units)
+        IEnumerator InitWhenReady()
         {
             // this is here so we don't have the glitch
             group = gameObject.GetComponent<CanvasGroup>();
@@ -64,18 +61,26 @@ namespace DashboardUI
             FieldInfo testInfo = entry.GetType().GetField("eventManager", BindingFlags.Static | BindingFlags.NonPublic);
             yield return new WaitUntil(() => testInfo.GetValue(entry) != null);
 
-            Init();
+            GetRefs();
             RefreshColors();
             RefreshPosition();
-            UpdateUnits(units);
+            UpdateUnits();
         }
 
-        void Init()
+        void GetRefs()
         {
             Main.Try(() =>
             {
-                instance = this;
+                // get data
+                revThresholds = new Vector2(
+                    GameEntryPoint.EventManager.playerManager.drivetrain.minRPM,
+                    GameEntryPoint.EventManager.playerManager.drivetrain.maxRPM
+                );
 
+                GetRev = () => GameEntryPoint.EventManager.playerManager.drivetrain.rpm;
+                GetSpeed = () => Main.GetField<float, HudManager>(hud, "digitalSpeedoVelo", BindingFlags.Instance);
+
+                // get refs
                 frame = transform.GetComponent<Image>();
                 outline = transform.GetChild(0).GetChild(0).GetComponent<Image>();
                 rev = transform.GetChild(0).GetChild(1).GetComponentInChildren<Image>();
@@ -165,12 +170,12 @@ namespace DashboardUI
             instance.transform.localScale = Vector3.one * Main.settings.uiScale;
         }
 
-        public static void UpdateUnits(string units)
+        public static void UpdateUnits()
         {
             if (instance == null)
                 return;
 
-            instance.unit.text = units;
+            instance.unit.text = SaveGame.GetInt("SETTINGS_SPEED_UNITS", 0) == 0 ? "mph" : "kmh";
         }
 
         public static void UpdateGear(int gear)
