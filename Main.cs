@@ -22,6 +22,7 @@ namespace DashboardUI
         static GameObject leftDashboard;
         static GameObject rightDashboard;
         static GameObject centerDashboard;
+        static Dashboard currentDashboard;
 
         // Called by the mod manager
         static bool Load(ModEntry modEntry)
@@ -162,6 +163,43 @@ namespace DashboardUI
 
             toRemove.Reverse();
             toRemove.ForEach(index => markers.RemoveAt(index));
+        }
+
+        public static void SpawnUI()
+        {
+            HudManager hud = GameObject.FindObjectOfType<HudManager>();
+
+            if (hud == null)
+            {
+                Error("Couldn't find the HUD manager. Aborting.");
+                return;
+            }
+
+            if (currentDashboard != null)
+                GameObject.Destroy(currentDashboard);
+
+            GameObject prefab = null;
+
+            switch (settings.uiOrientation)
+            {
+                case Settings.DashboardOrientation.Left:
+                    prefab = leftDashboard;
+                    break;
+
+                case Settings.DashboardOrientation.Right:
+                    prefab = rightDashboard;
+                    break;
+
+                case Settings.DashboardOrientation.Center:
+                    prefab = centerDashboard;
+                    break;
+            }
+
+            Transform uiParent = hud.transform.GetChild(0);
+            currentDashboard = GameObject.Instantiate(prefab, Settings.GetScreenPos(), Quaternion.identity, uiParent).AddComponent<Dashboard>();
+
+            if (!settings.disableInfoLogs)
+                Log("Spawned dashboard UI");
         }
     }
 }
