@@ -42,10 +42,8 @@ namespace DashboardUI
 
         // TODO : Fix rev fill
         // TODO : Fix rev counter positionning
-        // TODO : Fix pointer color set not working
         // TODO : Fix pointer angles
         // TODO : Fix limiter position
-        // TODO : Fix rev numbers reversed on Left orientation
 
         public void Init(HudManager hud)
         {
@@ -232,7 +230,11 @@ namespace DashboardUI
                 display.text = level.ToString();
             }
 
-            public void FixDisplay() => display.transform.localRotation = Quaternion.Euler(0, 0, -transform.localEulerAngles.z);
+            public void FixDisplay()
+            {
+                display.transform.localRotation = Quaternion.Euler(0, 0, -transform.localEulerAngles.z);
+                display.transform.localScale = new Vector3(display.transform.lossyScale.x, 1, 1);
+            }
         }
 
         class SVAColor
