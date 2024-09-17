@@ -45,9 +45,6 @@ namespace DashboardUI
         Func<float> GetRev;
         Vector3 initialScale;
 
-        // TODO : Fix limiter position
-        // TODO : Fix colors
-
         public void Init(HudManager hud)
         {
             instance = this;
