@@ -186,6 +186,14 @@ namespace DashboardUI
             instance.gear.text = gear;
         }
 
+        public static void PlayAnimation(bool fadeIn)
+        {
+            if (instance == null)
+                return;
+
+            LeanTween.alphaCanvas(instance.group, fadeIn ? 1 : 0, 0.3f).setEaseOutSine().setIgnoreTimeScale(true);
+        }
+
         class Tick
         {
             public Transform transform;

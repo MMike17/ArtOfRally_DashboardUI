@@ -36,9 +36,30 @@ namespace DashboardUI
         static void Postfix(RPMDisplay __instance) => Main.Try(() => Dashboard.UpdateGear(__instance.GearDisplay.text));
     }
 
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.ShowStageHud))]
+    static class ShowAnimator
+    {
+        static void Postfix()
+        {
+            if (!Main.enabled)
+                return;
+
+            Main.Try(() => Dashboard.PlayAnimation(true));
+        }
+    }
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.HideStageHud))]
+    static class HideAnimator
+    {
+        static void Postfix()
+        {
+            if (!Main.enabled)
+                return;
+
+            Main.Try(() => Dashboard.PlayAnimation(false));
+        }
+    }
+
     // TODO : Add conditions to show/enable ui
     // TODO : Hide game's dahsboard UI
-    // TODO : Plug into menu animations
-    // TODO : Call Dashboard.UpdateUnits in patch
-    // TODO : Call Dashboard.UpdateGear in patch
 }
