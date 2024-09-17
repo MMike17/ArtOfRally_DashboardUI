@@ -1,6 +1,7 @@
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using UnityEngine;
 using UnityModManagerNet;
@@ -18,6 +19,9 @@ namespace DashboardUI
 
         static List<GameObject> markers;
         static Material markerMat;
+        static GameObject leftDashboard;
+        static GameObject rightDashboard;
+        static GameObject centerDashboard;
 
         // Called by the mod manager
         static bool Load(ModEntry modEntry)
@@ -33,6 +37,24 @@ namespace DashboardUI
             modEntry.OnToggle = OnToggle;
             modEntry.OnGUI = (entry) => settings.Draw(entry);
             modEntry.OnSaveGUI = (entry) => settings.Save(entry);
+
+            // load asset bundle
+            Try(() =>
+            {
+                AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(modEntry.Path, "dashboard_ui"));
+
+                if (bundle != null)
+                {
+                    leftDashboard = bundle.LoadAsset<GameObject>("DashboardUILeft");
+                    rightDashboard = bundle.LoadAsset<GameObject>("DashboardUIRight");
+                    centerDashboard = bundle.LoadAsset<GameObject>("DashboardUICenter");
+                }
+                else
+                    Error("Couldn't load asset bundle \"dashboard_ui\"");
+
+                if (bundle != null && !settings.disableInfoLogs)
+                    Log("Loaded bundle \"dashboard_ui\"");
+            });
 
             markers = new List<GameObject>();
             return true;
