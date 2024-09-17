@@ -11,10 +11,14 @@ namespace DashboardUI
     {
         public static bool initialized;
 
-        float MIN_ANGLE => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 120 : 45;
-        float MAX_ANGLE => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? -120 : -135;
-        float MIN_FILL => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 0.164f : 0;
-        float MAX_FILL => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 0.837f : 0.5f;
+        float MIN_TICK_ANGLE => isCenter ? 30 : 45;
+        float MAX_TICK_ANGLE => isCenter ? -210 : -135;
+        float MIN_DIAL_ANGLE => isCenter ? 120 : 135;
+        float MAX_DIAL_ANGLE => isCenter ? -120 : -45;
+        float MIN_FILL => isCenter ? 0.164f : 0;
+        float MAX_FILL => isCenter ? 0.837f : 0.5f;
+
+        bool isCenter = Main.settings.uiOrientation == Settings.DashboardOrientation.Center;
 
         static Dashboard instance;
 
@@ -40,9 +44,6 @@ namespace DashboardUI
         Func<float> GetRev;
         Vector3 initialScale;
 
-        // TODO : Fix rev fill
-        // TODO : Fix rev counter positionning
-        // TODO : Fix pointer angles
         // TODO : Fix limiter position
 
         public void Init(HudManager hud)
@@ -120,7 +121,8 @@ namespace DashboardUI
                 for (int i = 0; i <= ticksCount; i++)
                 {
                     Tick tick = new Tick(Instantiate(tickPrefab.graphic, tickHolder), i + 1);
-                    tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, (float)i / ticksCount));
+                    Main.Log("angle (" + i + ") : " + Mathf.Lerp(MIN_TICK_ANGLE, MAX_TICK_ANGLE, (float)i / ticksCount));
+                    tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_TICK_ANGLE, MAX_TICK_ANGLE, (float)i / ticksCount));
                     tick.FixDisplay();
 
                     ticks.Add(tick);
@@ -151,7 +153,7 @@ namespace DashboardUI
                 return;
 
             float revPercent = Mathf.InverseLerp(revThresholds.x, revThresholds.y, GetRev());
-            dial.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, revPercent));
+            dial.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_DIAL_ANGLE, MAX_DIAL_ANGLE, revPercent));
             rev.fillAmount = Mathf.Lerp(MIN_FILL, MAX_FILL, revPercent);
 
             speed.text = Mathf.CeilToInt(GetSpeed()).ToString();
