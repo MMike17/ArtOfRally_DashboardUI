@@ -60,6 +60,7 @@ namespace DashboardUI
         {
             Main.SetMarkers(showMarkers);
             Dashboard.RefreshColors();
+            Dashboard.RefreshPosition();
         }
 
         public static Color GetColor(ColorTag tag)

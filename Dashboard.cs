@@ -30,11 +30,11 @@ namespace DashboardUI
 
         Dictionary<string, SVAColor> colorMap;
         List<Tick> ticks;
-        Vector2Int revThresholds;
+        Vector2 revThresholds;
         Func<int> GetSpeed;
         Func<int> GetRev;
 
-        public void Init(Vector2Int revThresholds, Func<int> GetSpeed, Func<int> GetRev, string units)
+        public void Init(Vector2 revThresholds, Func<int> GetSpeed, Func<int> GetRev, string units)
         {
             this.revThresholds = revThresholds;
             this.GetSpeed = GetSpeed;
@@ -63,6 +63,7 @@ namespace DashboardUI
 
             Init();
             RefreshColors();
+            RefreshPosition();
             UpdateUnits(units);
         }
 
@@ -87,7 +88,7 @@ namespace DashboardUI
                 speed = transform.GetChild(3).GetComponent<Text>();
 
                 ticks = new List<Tick>();
-                int ticksCount = (revThresholds.y - revThresholds.x) / 1000;
+                int ticksCount = Mathf.RoundToInt((revThresholds.y - revThresholds.x) / 1000);
 
                 for (int i = 0; i <= ticksCount; i++)
                 {
@@ -150,6 +151,15 @@ namespace DashboardUI
                 tick.graphic.color = tickColor;
                 tick.display.color = tickTextColor;
             });
+        }
+
+        public static void RefreshPosition()
+        {
+            if (instance == null)
+                return;
+
+            instance.transform.position = Settings.GetScreenPos();
+            instance.transform.localScale = Vector3.one * Main.settings.uiScale;
         }
 
         public static void UpdateUnits(string units)
