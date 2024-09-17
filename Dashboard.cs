@@ -17,6 +17,7 @@ namespace DashboardUI
         float MAX_DIAL_ANGLE => isCenter ? -120 : -45;
         float MIN_FILL => isCenter ? 0.164f : 0;
         float MAX_FILL => isCenter ? 0.837f : 0.5f;
+        float MAX_LIMIT => isCenter ? 0.7f : 0.5f;
 
         bool isCenter = Main.settings.uiOrientation == Settings.DashboardOrientation.Center;
 
@@ -121,7 +122,6 @@ namespace DashboardUI
                 for (int i = 0; i <= ticksCount; i++)
                 {
                     Tick tick = new Tick(Instantiate(tickPrefab.graphic, tickHolder), i + 1);
-                    Main.Log("angle (" + i + ") : " + Mathf.Lerp(MIN_TICK_ANGLE, MAX_TICK_ANGLE, (float)i / ticksCount));
                     tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_TICK_ANGLE, MAX_TICK_ANGLE, (float)i / ticksCount));
                     tick.FixDisplay();
 
@@ -129,7 +129,7 @@ namespace DashboardUI
                 }
 
                 tickPrefab.transform.gameObject.SetActive(false);
-                limiter.fillAmount = (float)1 / ticksCount;
+                limiter.fillAmount = Mathf.Lerp(0, MAX_LIMIT, (float)0.5f / ticksCount);
 
                 // store color map
                 colorMap = new Dictionary<string, SVAColor>();
