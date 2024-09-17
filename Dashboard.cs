@@ -46,6 +46,7 @@ namespace DashboardUI
         Vector3 initialScale;
 
         // TODO : Fix limiter position
+        // TODO : Fix colors
 
         public void Init(HudManager hud)
         {
@@ -263,13 +264,17 @@ namespace DashboardUI
             public Color Apply(Color color)
             {
                 float hue;
+                float newV;
 
                 if (useSaturation)
-                    Color.RGBToHSV(color, out hue, out _, out _);
+                    Color.RGBToHSV(color, out hue, out _, out newV);
                 else
-                    Color.RGBToHSV(color, out hue, out s, out _);
+                    Color.RGBToHSV(color, out hue, out s, out newV);
 
-                Color result = Color.HSVToRGB(hue, s, v);
+                if (color != Color.black && color != Color.grey)
+                    newV = v;
+
+                Color result = Color.HSVToRGB(hue, s, newV);
                 result.a = a;
                 return result;
             }
