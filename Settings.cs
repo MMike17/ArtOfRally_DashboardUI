@@ -38,13 +38,13 @@ namespace DashboardUI
         public ColorTag pointerColor = ColorTag.Red;
         [Space]
         [Draw(DrawType.PopupList)]
-        public DashboardOrientation uiOrientation;
+        public DashboardOrientation uiOrientation = DashboardOrientation.Left;
         [Draw(DrawType.Slider, Min = -1, Max = 1, Precision = 3)]
         public float xPositionPercent;
         [Draw(DrawType.Slider, Min = 0, Max = 1, Precision = 3)]
         public float yPositionPercent;
         [Draw(DrawType.Slider, Min = 0.5f, Max = 2, Precision = 3)]
-        public float uiScale;
+        public float uiScale = 0.8f;
 
         // TODO : Add default values here
 
@@ -89,6 +89,11 @@ namespace DashboardUI
                 default:
                     return Color.clear;
             }
+        }
+
+        public static Vector2 GetScreenPos()
+        {
+            return new Vector2(Screen.width * Main.settings.xPositionPercent, Screen.height * Main.settings.yPositionPercent);
         }
     }
 }
