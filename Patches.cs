@@ -18,8 +18,12 @@ namespace DashboardUI
     // 	}
     // }
 
-    // TODO : Load asset bundle
-    // TODO : Spawn UI on start of game
+    [HarmonyPatch(typeof(StageSceneManager), MethodType.Constructor)]
+    static class UISpawner
+    {
+        static void Postfix() => Main.Try(() => Main.SpawnUI());
+    }
+
     // TODO : Plug values into dashboard UI
     // TODO : Hide game's dahsboard UI
     // TODO : Plug into menu animations
