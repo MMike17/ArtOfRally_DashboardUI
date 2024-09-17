@@ -102,8 +102,8 @@ namespace DashboardUI
                 // get refs
                 frame = transform.GetComponent<Image>();
                 outline = transform.GetChild(0).GetChild(0).GetComponent<Image>();
-                rev = transform.GetChild(0).GetChild(1).GetComponentInChildren<Image>();
-                limiter = transform.GetChild(0).GetChild(2).GetComponentInChildren<Image>();
+                rev = transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Image>();
+                limiter = transform.GetChild(0).GetChild(2).GetChild(0).GetComponent<Image>();
 
                 tickHolder = transform.GetChild(0).GetChild(3);
                 tickPrefab = new Tick(tickHolder.GetChild(0).GetComponent<Image>(), 0);
@@ -152,6 +152,7 @@ namespace DashboardUI
 
             float revPercent = Mathf.InverseLerp(revThresholds.x, revThresholds.y, GetRev());
             dial.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, revPercent));
+            rev.fillAmount = Mathf.Lerp(MIN_FILL, MAX_FILL, revPercent);
 
             speed.text = Mathf.CeilToInt(GetSpeed()).ToString();
         }
