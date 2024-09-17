@@ -9,10 +9,12 @@ namespace DashboardUI
 {
     public class Dashboard : MonoBehaviour
     {
-        float minAngle => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 120 : 45;
-        float maxAngle => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? -120 : -135;
-        float minFill => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 0.164f : 0;
-        float maxFill => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 0.837f : 0.5f;
+        public static bool initialized;
+
+        float MIN_ANGLE => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 120 : 45;
+        float MAX_ANGLE => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? -120 : -135;
+        float MIN_FILL => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 0.164f : 0;
+        float MAX_FILL => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 0.837f : 0.5f;
 
         static Dashboard instance;
 
@@ -38,12 +40,12 @@ namespace DashboardUI
         Func<float> GetRev;
         Vector3 initialScale;
 
-        bool initialized;
-
         // TODO : Fix rev fill
         // TODO : Fix rev counter positionning
-        // TODO : Fix shifting
         // TODO : Fix pointer color set not working
+        // TODO : Fix pointer angles
+        // TODO : Fix limiter position
+        // TODO : Fix rev numbers reversed on Left orientation
 
         public void Init(HudManager hud)
         {
@@ -68,7 +70,7 @@ namespace DashboardUI
 
             if (entry == null)
             {
-                Main.Log("Can't find entry point. Are you sure you're spawning the UI in the right scene ?");
+                Main.Error("Can't find entry point. Are you sure you're spawning the UI in the right scene ?");
                 yield break;
             }
 
@@ -120,7 +122,7 @@ namespace DashboardUI
                 for (int i = 0; i <= ticksCount; i++)
                 {
                     Tick tick = new Tick(Instantiate(tickPrefab.graphic, tickHolder), i + 1);
-                    tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(minAngle, maxAngle, (float)i / ticksCount));
+                    tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, (float)i / ticksCount));
                     tick.FixDisplay();
 
                     ticks.Add(tick);
@@ -151,14 +153,16 @@ namespace DashboardUI
                 return;
 
             float revPercent = Mathf.InverseLerp(revThresholds.x, revThresholds.y, GetRev());
-            dial.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(minAngle, maxAngle, revPercent));
+            dial.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, revPercent));
 
             speed.text = Mathf.CeilToInt(GetSpeed()).ToString();
         }
 
+        void OnDestroy() => initialized = false;
+
         public static void RefreshColors()
         {
-            if (instance == null || !instance.initialized)
+            if (instance == null || !initialized)
                 return;
 
             instance.frame.color = instance.colorMap[nameof(instance.frame)].Apply(Settings.GetColor(Main.settings.primaryColor));
@@ -182,7 +186,7 @@ namespace DashboardUI
 
         public static void RefreshPosition()
         {
-            if (instance == null || !instance.initialized)
+            if (instance == null || !initialized)
                 return;
 
             instance.transform.localPosition = Settings.GetScreenPos();
@@ -191,7 +195,7 @@ namespace DashboardUI
 
         public static void UpdateUnits()
         {
-            if (instance == null || !instance.initialized)
+            if (instance == null || !initialized)
                 return;
 
             instance.unit.text = SaveGame.GetInt("SETTINGS_SPEED_UNITS", 0) == 0 ? "mph" : "kmh";
@@ -199,7 +203,7 @@ namespace DashboardUI
 
         public static void UpdateGear(string gear)
         {
-            if (instance == null || !instance.initialized)
+            if (instance == null || !initialized)
                 return;
 
             instance.gear.text = gear;
@@ -207,7 +211,7 @@ namespace DashboardUI
 
         public static void PlayAnimation(bool fadeIn)
         {
-            if (instance == null || !instance.initialized)
+            if (instance == null || !initialized)
                 return;
 
             LeanTween.alphaCanvas(instance.group, fadeIn ? 1 : 0, 0.3f).setEaseOutSine().setIgnoreTimeScale(true);

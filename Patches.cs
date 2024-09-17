@@ -1,4 +1,6 @@
 using HarmonyLib;
+using System.Reflection;
+using UnityEngine;
 
 namespace DashboardUI
 {
@@ -14,10 +16,27 @@ namespace DashboardUI
         static void Postfix() => Main.Try(() => Dashboard.UpdateUnits());
     }
 
-    [HarmonyPatch(typeof(RPMDisplay), "UpdateGearDisplay")]
     static class GearUpdater
     {
-        static void Postfix(RPMDisplay __instance) => Main.Try(() => Dashboard.UpdateGear(__instance.GearDisplay.text));
+        static RPMDisplay ui;
+
+        public static void Update()
+        {
+            if (ui == null)
+                ui = GameObject.FindObjectOfType<RPMDisplay>();
+
+            if (ui == null)
+            {
+                Main.Error("Couldn't find RPM display. Aborting.");
+                return;
+            }
+
+            if (Dashboard.initialized)
+            {
+                Main.InvokeMethod(ui, "UpdateGearDisplay", BindingFlags.Instance, new object[] { });
+                Dashboard.UpdateGear(ui.GearDisplay.text);
+            }
+        }
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.ShowStageHud))]

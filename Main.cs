@@ -39,6 +39,7 @@ namespace DashboardUI
             modEntry.OnToggle = OnToggle;
             modEntry.OnGUI = (entry) => settings.Draw(entry);
             modEntry.OnSaveGUI = (entry) => settings.Save(entry);
+            modEntry.OnUpdate = (entry, dt) => GearUpdater.Update();
 
             // load asset bundle
             Try(() =>
