@@ -40,13 +40,11 @@ namespace DashboardUI
         [Draw(DrawType.PopupList)]
         public DashboardOrientation uiOrientation = DashboardOrientation.Left;
         [Draw(DrawType.Slider, Min = -1, Max = 1, Precision = 3)]
-        public float xPositionPercent;
+        public float xPositionPercent = -0.79f;
         [Draw(DrawType.Slider, Min = 0, Max = 1, Precision = 3)]
-        public float yPositionPercent;
+        public float yPositionPercent = 0.15f;
         [Draw(DrawType.Slider, Min = 0.5f, Max = 2, Precision = 3)]
-        public float uiScale = 0.8f;
-
-        // TODO : Add default values here
+        public float uiScale = 0.58f;
 
         [Header("Debug")]
         [Draw(DrawType.Toggle)]
