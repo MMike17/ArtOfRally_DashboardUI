@@ -30,8 +30,13 @@ namespace DashboardUI
         static void Postfix() => Main.Try(() => Dashboard.UpdateUnits());
     }
 
+    [HarmonyPatch(typeof(RPMDisplay), "UpdateGearDisplay")]
+    static class GearUpdater
+    {
+        static void Postfix(RPMDisplay __instance) => Main.Try(() => Dashboard.UpdateGear(__instance.GearDisplay.text));
+    }
+
     // TODO : Add conditions to show/enable ui
-    // TODO : Plug into gear change
     // TODO : Hide game's dahsboard UI
     // TODO : Plug into menu animations
     // TODO : Call Dashboard.UpdateUnits in patch

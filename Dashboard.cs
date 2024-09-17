@@ -178,12 +178,12 @@ namespace DashboardUI
             instance.unit.text = SaveGame.GetInt("SETTINGS_SPEED_UNITS", 0) == 0 ? "mph" : "kmh";
         }
 
-        public static void UpdateGear(int gear)
+        public static void UpdateGear(string gear)
         {
             if (instance == null)
                 return;
 
-            instance.gear.text = gear.ToString();
+            instance.gear.text = gear;
         }
 
         class Tick
