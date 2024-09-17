@@ -9,12 +9,13 @@ namespace DashboardUI
 {
     public class Dashboard : MonoBehaviour
     {
-        const float MIN_ANGLE = 45;
-        const float MAX_ANGLE = -135;
+        float minAngle => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? 120 : 45;
+        float maxAngle => Main.settings.uiOrientation == Settings.DashboardOrientation.Center ? -120 : -135;
 
         static Dashboard instance;
 
         // UI
+        CanvasGroup group;
         Image frame;
         Image outline;
         Image rev;
@@ -26,7 +27,6 @@ namespace DashboardUI
         Text gear;
         Text unit;
         Text speed;
-        CanvasGroup group;
 
         Dictionary<string, SVAColor> colorMap;
         List<Tick> ticks;
@@ -46,9 +46,8 @@ namespace DashboardUI
         IEnumerator InitWhenReady(string units)
         {
             // this is here so we don't have the glitch
-            group = gameObject.AddComponent<CanvasGroup>();
+            group = gameObject.GetComponent<CanvasGroup>();
             group.alpha = 0;
-            group.blocksRaycasts = false;
 
             // check manager availability
             GameEntryPoint entry = FindObjectOfType<GameEntryPoint>();
@@ -93,7 +92,7 @@ namespace DashboardUI
                 for (int i = 0; i <= ticksCount; i++)
                 {
                     Tick tick = new Tick(Instantiate(tickPrefab.graphic, tickHolder), i + 1);
-                    tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, (float)i / ticksCount));
+                    tick.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(minAngle, maxAngle, (float)i / ticksCount));
                     tick.FixDisplay();
 
                     ticks.Add(tick);
@@ -105,16 +104,16 @@ namespace DashboardUI
                 // store color map
                 colorMap = new Dictionary<string, SVAColor>();
 
-                colorMap.Add(nameof(frame), new SVAColor(frame));
-                colorMap.Add(nameof(outline), new SVAColor(outline));
-                colorMap.Add(nameof(rev), new SVAColor(rev));
-                colorMap.Add(nameof(tickPrefab.graphic), new SVAColor(tickPrefab.graphic));
-                colorMap.Add(nameof(tickPrefab.display), new SVAColor(tickPrefab.display));
-                colorMap.Add(nameof(dial), new SVAColor(dial));
-                colorMap.Add(nameof(pointer), new SVAColor(pointer));
-                colorMap.Add(nameof(gear), new SVAColor(gear));
-                colorMap.Add(nameof(unit), new SVAColor(unit));
-                colorMap.Add(nameof(speed), new SVAColor(speed));
+                colorMap.Add(nameof(frame), new SVAColor(frame, false));
+                colorMap.Add(nameof(outline), new SVAColor(outline, false));
+                colorMap.Add(nameof(rev), new SVAColor(rev, false));
+                colorMap.Add(nameof(tickPrefab.graphic), new SVAColor(tickPrefab.graphic, false));
+                colorMap.Add(nameof(tickPrefab.display), new SVAColor(tickPrefab.display, false));
+                colorMap.Add(nameof(dial), new SVAColor(dial, false));
+                colorMap.Add(nameof(pointer), new SVAColor(pointer, true));
+                colorMap.Add(nameof(gear), new SVAColor(gear, false));
+                colorMap.Add(nameof(unit), new SVAColor(unit, false));
+                colorMap.Add(nameof(speed), new SVAColor(speed, false));
             });
         }
 
@@ -124,12 +123,10 @@ namespace DashboardUI
                 return;
 
             float revPercent = Mathf.InverseLerp(revThresholds.x, revThresholds.y, GetRev());
-            dial.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(MIN_ANGLE, MAX_ANGLE, revPercent));
+            dial.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(minAngle, maxAngle, revPercent));
 
             speed.text = Mathf.CeilToInt(GetSpeed()).ToString();
         }
-
-        // TODO : Add method to update gear
 
         public static void RefreshColors()
         {
@@ -195,16 +192,30 @@ namespace DashboardUI
             public float v;
             public float a;
 
-            public SVAColor(Graphic ui)
+            bool useSaturation;
+
+            public SVAColor(Graphic ui, bool useSaturation)
             {
-                Color.RGBToHSV(ui.color, out _, out s, out v);
+                this.useSaturation = useSaturation;
+
+                if (useSaturation)
+                    Color.RGBToHSV(ui.color, out _, out s, out v);
+                else
+                    Color.RGBToHSV(ui.color, out _, out _, out v);
+
                 a = ui.color.a;
             }
 
             public Color Apply(Color color)
             {
-                Color.RGBToHSV(color, out float h, out _, out _);
-                Color result = Color.HSVToRGB(h, s, v);
+                float hue;
+
+                if (useSaturation)
+                    Color.RGBToHSV(color, out hue, out _, out _);
+                else
+                    Color.RGBToHSV(color, out hue, out s, out _);
+
+                Color result = Color.HSVToRGB(hue, s, v);
                 result.a = a;
                 return result;
             }
