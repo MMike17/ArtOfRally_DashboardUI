@@ -30,15 +30,18 @@ namespace DashboardUI
 
         Dictionary<string, SVAColor> colorMap;
         List<Tick> ticks;
+        HudManager hud;
         Vector2 revThresholds;
-        Func<int> GetSpeed;
-        Func<int> GetRev;
+        Func<float> GetSpeed;
+        Func<float> GetRev;
 
-        public void Init(Vector2 revThresholds, Func<int> GetSpeed, Func<int> GetRev, string units)
+        public void Init(Vector2 revThresholds, Func<float> GetRev, string units, HudManager hud)
         {
             this.revThresholds = revThresholds;
-            this.GetSpeed = GetSpeed;
             this.GetRev = GetRev;
+            this.hud = hud;
+
+            GetSpeed = () => Main.GetField<float, HudManager>(hud, "digitalSpeedoVelo", BindingFlags.Instance);
 
             StartCoroutine(InitWhenReady(units));
         }

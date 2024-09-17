@@ -195,8 +195,16 @@ namespace DashboardUI
                     break;
             }
 
-            Transform uiParent = hud.transform.GetChild(0);
-            currentDashboard = GameObject.Instantiate(prefab, Settings.GetScreenPos(), Quaternion.identity, uiParent).AddComponent<Dashboard>();
+            currentDashboard = GameObject.Instantiate(prefab, hud.transform.GetChild(0)).AddComponent<Dashboard>();
+            currentDashboard.Init(
+                new Vector2(
+                    GameEntryPoint.EventManager.playerManager.drivetrain.minRPM,
+                    GameEntryPoint.EventManager.playerManager.drivetrain.maxRPM
+                ),
+                () => GameEntryPoint.EventManager.playerManager.drivetrain.rpm,
+                SaveGame.GetInt("SETTINGS_SPEED_UNITS", 0) == 0 ? "mph" : "kmh",
+                hud
+            );
 
             if (!settings.disableInfoLogs)
                 Log("Spawned dashboard UI");
