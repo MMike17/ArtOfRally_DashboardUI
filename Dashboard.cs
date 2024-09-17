@@ -36,13 +36,21 @@ namespace DashboardUI
         Vector2 revThresholds;
         Func<float> GetSpeed;
         Func<float> GetRev;
+        Vector3 initialScale;
 
         bool initialized;
+
+        // TODO : Fix rev fill
+        // TODO : Fix rev counter positionning
+        // TODO : Fix shifting
+        // TODO : Fix start at 0 scale
+        // TODO : Fix pointer color set not working
 
         public void Init(HudManager hud)
         {
             instance = this;
             this.hud = hud;
+            initialScale = transform.localScale;
 
             StartCoroutine(InitWhenReady());
 
@@ -68,12 +76,12 @@ namespace DashboardUI
             FieldInfo testInfo = entry.GetType().GetField("eventManager", BindingFlags.Static | BindingFlags.NonPublic);
             yield return new WaitUntil(() => testInfo.GetValue(entry) != null);
 
+            initialized = true;
+
             GetRefs();
             RefreshColors();
             RefreshPosition();
             UpdateUnits();
-
-            initialized = true;
         }
 
         void GetRefs()
@@ -99,7 +107,7 @@ namespace DashboardUI
                 tickPrefab = new Tick(tickHolder.GetChild(0).GetComponent<Image>(), 0);
 
                 dial = transform.GetChild(0).GetChild(4).GetComponent<Image>();
-                pointer = dial.transform.GetComponentInChildren<Image>();
+                pointer = dial.transform.GetChild(0).GetComponent<Image>();
                 gear = transform.GetChild(1).GetComponent<Text>();
                 unit = transform.GetChild(2).GetComponent<Text>();
                 speed = transform.GetChild(3).GetComponent<Text>();
@@ -175,8 +183,8 @@ namespace DashboardUI
             if (instance == null || !instance.initialized)
                 return;
 
-            instance.transform.position = Settings.GetScreenPos();
-            instance.transform.localScale = Vector3.one * Main.settings.uiScale;
+            instance.transform.localPosition = Settings.GetScreenPos();
+            instance.transform.localScale = instance.initialScale * Main.settings.uiScale;
         }
 
         public static void UpdateUnits()
@@ -184,7 +192,6 @@ namespace DashboardUI
             if (instance == null || !instance.initialized)
                 return;
 
-            Main.Log("Instance : " + (instance != null) + "\nunit : " + (instance.unit != null));
             instance.unit.text = SaveGame.GetInt("SETTINGS_SPEED_UNITS", 0) == 0 ? "mph" : "kmh";
         }
 
