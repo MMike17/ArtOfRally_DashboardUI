@@ -15,8 +15,8 @@ namespace DashboardUI
         float MAX_TICK_ANGLE => isCenter ? -210 : -135;
         float MIN_DIAL_ANGLE => isCenter ? 120 : 135;
         float MAX_DIAL_ANGLE => isCenter ? -120 : -45;
-        float MIN_FILL => isCenter ? 0.164f : 0;
-        float MAX_FILL => isCenter ? 0.837f : 0.5f;
+        float MIN_FILL => isCenter ? 0.165f : 0;
+        float MAX_FILL => isCenter ? 0.836f : 0.5f;
         float MAX_LIMIT => isCenter ? 0.7f : 0.5f;
 
         bool isCenter = Main.settings.uiOrientation == Settings.DashboardOrientation.Center;
@@ -101,9 +101,9 @@ namespace DashboardUI
 
                 // get refs
                 frame = transform.GetComponent<Image>();
-                outline = transform.GetChild(0).GetChild(0).GetComponent<Image>();
-                rev = transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Image>();
-                limiter = transform.GetChild(0).GetChild(2).GetChild(0).GetComponent<Image>();
+                outline = transform.GetChild(0).GetChild(2).GetComponent<Image>();
+                rev = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
+                limiter = transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Image>();
 
                 tickHolder = transform.GetChild(0).GetChild(3);
                 tickPrefab = new Tick(tickHolder.GetChild(0).GetComponent<Image>(), 0);
