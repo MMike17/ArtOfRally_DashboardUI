@@ -1,11 +1,9 @@
 ﻿# Dashboard UI
 
-<!-- Search and replace ArtOfRally_DashboardUI with the name of your mod -->
-
 [![](https://img.shields.io/github/v/release/MMike17/ArtOfRally_DashboardUI?label=Download)](https://github.com/MMike17/ArtOfRally_DashboardUI/releases/latest)
 ![](https://img.shields.io/badge/Game%20Version-v1.5.5-blue)
 
-A mod for Art of Rally that [...]
+A mod for Art of Rally which adds a rev counter and speedometer UI.
 
 #### Launcher Support
 
@@ -22,36 +20,61 @@ A mod for Art of Rally that [...]
 ![](https://img.shields.io/badge/XBox-Untested-yellow)
 ![](https://img.shields.io/badge/Switch-Untested-yellow)
 
-## Requirements
-
-This mod requires the "..." that you can find [here](https://github.com/MMike17/ArtOfRally_DashboardUI).\
-<!-- Latest release [![](https://img.shields.io/github/v/release/MMike17/?label=Real%20car%20names)](https://github.com/MMike17/ArtOfRally_RealCarNames/releases/latest) -->
-
 ## Usage
 
 Press Ctrl + F10 to open the mod manager menu.\
-Adjust settings to select [...] you want.\
-By default, the mod [...].
+Adjust settings to select the colors you want for the UI, its placement and its size.
 
-"<settingsName>" will [...].
+By default, the mod hide's the game's RPM, gear and speed UI, and places the custom UI on the bottom left of the screen with white base, cyan rev and red pointer.
 
-Disabling the mod in the manager will [...] by default.
+### General
 
-## Disclaimer
+- **primaryColor** : will change the color of most of the UI's elements.
+- **secondaryColor** : will change the color of the rev jauge and of the gear indicator.
+- **pointerColor** : will change the color of the rev needle.
+- **uiOrientation** : will change the general shape of the rev counter.
+- **xPositionPercent** : will move the UI horizontally.
+- **yPositionPercent** : will move the UI vertically.
+- **uiScale** : will change the size of the UI.
 
-[...]
+### Debug
+
+- **disableInfoLogs** : will disable the mod's information log messages.
+
+Disabling the mod in the manager will hide the custom UI and display the game's original UI by default.
+
+## Available colors
+
+The available colors for the UI are :
+
+- White
+- Grey
+- Black
+- Red
+- Green
+- Blue
+- Yellow
+- Magenta
+- Cyan
+- Brown
 
 ## Installation
 
 Follow the [installation guide](https://www.nexusmods.com/site/mods/21/) of
 the Unity Mod Manager.\
-Then simply download the [latest release](https://www.nexusmods.com/artofrally/mods/<nexusModID>)
+Then simply download the [latest release](https://www.nexusmods.com/artofrally/mods/14)
 and drop it into the mod manager's mods page.
 
 ## Showcase
 
-![](Screenshots/.png)
+![](Screenshots/Left.png)
+![](Screenshots/Center.png)
+![](Screenshots/Right.png)
+![](Screenshots/Settings.png)
 
-## Acknowledgments
+## Bonus
 
-[...]
+Want to see the damages your car has sustained while in-stage ?
+You can try the Damage UI mod to display special UI representing the current state of your car's parts.
+
+[![](https://img.shields.io/github/v/release/MMike17/ArtOfRally_DamageUI?label=Download%20Damage%20UI)](https://github.com/MMike17/ArtOfRally_DamageUI/releases/latest)
