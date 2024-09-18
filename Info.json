@@ -6,6 +6,6 @@
 	"GameVersion": "1.5,5",
 	"AssemblyName": "DashboardUI.dll",
 	"EntryMethod": "DashboardUI.Main.Load",
-	"HomePage": "<modHomepageLink>",
+	"HomePage": "https://www.nexusmods.com/artofrally/mods/14",
 	"Repository": "https://github.com/MMike17/ArtOfRally_DashboardUI"
 }
