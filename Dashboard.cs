@@ -9,7 +9,12 @@ namespace DashboardUI
 {
     public class Dashboard : MonoBehaviour
     {
+        const float MIN_SPEED_MAGNITUDE = 80;
+        const float MAX_SPEED_MAGNITUDE = 180;
+        const float MAX_SPEED_ANGLE = 30;
+
         public static bool initialized;
+        static Dashboard instance;
 
         float MIN_TICK_ANGLE => isCenter ? 30 : 45;
         float MAX_TICK_ANGLE => isCenter ? -210 : -135;
@@ -20,8 +25,6 @@ namespace DashboardUI
         float MAX_LIMIT => isCenter ? 0.7f : 0.5f;
 
         bool isCenter = Main.settings.uiOrientation == Settings.DashboardOrientation.Center;
-
-        static Dashboard instance;
 
         // UI
         CanvasGroup group;
@@ -155,6 +158,20 @@ namespace DashboardUI
             rev.fillAmount = Mathf.Lerp(MIN_FILL, MAX_FILL, revPercent);
 
             speed.text = Mathf.CeilToInt(GetSpeed()).ToString();
+            transform.eulerAngles = GetSpeedRotation();
+        }
+
+        Vector3 GetSpeedRotation()
+        {
+            float speedPercent = GetSpeed != null ? Mathf.InverseLerp(MIN_SPEED_MAGNITUDE, MAX_SPEED_MAGNITUDE, GetSpeed()) : 0;
+
+            Vector3 targetRotation = new Vector3(
+                (Main.settings.yPositionPercent - 0.5f) * 2 * MAX_SPEED_ANGLE,
+                Main.settings.xPositionPercent * -MAX_SPEED_ANGLE,
+                0
+            );
+
+            return Vector3.Lerp(Vector3.zero, targetRotation, speedPercent);
         }
 
         void OnDestroy() => initialized = false;
