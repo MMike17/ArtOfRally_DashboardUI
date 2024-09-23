@@ -36,6 +36,7 @@ By default, the mod hide's the game's RPM, gear and speed UI, and places the cus
 - **xPositionPercent** : will move the UI horizontally.
 - **yPositionPercent** : will move the UI vertically.
 - **uiScale** : will change the size of the UI.
+- **enableSpeedTilting** : will decide if the dashboard UI tilts with the speed of the car.
 
 ### Debug
 
