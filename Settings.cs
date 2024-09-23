@@ -50,10 +50,10 @@ namespace DashboardUI
         public bool enableSpeedTilting = true;
 
         [Header("Debug")]
-        //[Draw(DrawType.Toggle)]
-        public bool showMarkers = false;
         [Draw(DrawType.Toggle)]
         public bool disableInfoLogs = true;
+        //[Draw(DrawType.Toggle)]
+        public bool showMarkers = false;
 
         public override void Save(ModEntry modEntry) => Save(this, modEntry);
 
