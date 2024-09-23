@@ -158,7 +158,11 @@ namespace DashboardUI
             rev.fillAmount = Mathf.Lerp(MIN_FILL, MAX_FILL, revPercent);
 
             speed.text = Mathf.CeilToInt(GetSpeed()).ToString();
-            transform.eulerAngles = GetSpeedRotation();
+
+            if (Main.settings.enableSpeedTilting)
+                transform.eulerAngles = GetSpeedRotation();
+            else
+                transform.eulerAngles = Vector3.one;
         }
 
         Vector3 GetSpeedRotation()

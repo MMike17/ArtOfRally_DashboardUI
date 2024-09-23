@@ -45,6 +45,9 @@ namespace DashboardUI
         public float yPositionPercent = 0.15f;
         [Draw(DrawType.Slider, Min = 0.5f, Max = 2, Precision = 3)]
         public float uiScale = 0.58f;
+        [Space]
+        [Draw(DrawType.Toggle)]
+        public bool enableSpeedTilting = true;
 
         [Header("Debug")]
         //[Draw(DrawType.Toggle)]
