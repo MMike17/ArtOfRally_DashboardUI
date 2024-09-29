@@ -130,7 +130,8 @@ namespace DashboardUI
                 }
 
                 tickPrefab.transform.gameObject.SetActive(false);
-                limiter.fillAmount = Mathf.Lerp(0, MAX_LIMIT, (float)0.5f / ticksCount);
+                Drivetrain drivetrain = GameEntryPoint.EventManager.playerManager.drivetrain;
+                limiter.fillAmount = Mathf.Lerp(MAX_LIMIT, 0, Mathf.InverseLerp(drivetrain.minRPM, drivetrain.maxRPM, drivetrain.shiftUpRPM));
 
                 // store color map
                 colorMap = new Dictionary<string, SVAColor>();
