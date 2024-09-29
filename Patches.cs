@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DashboardUI
 {
-    [HarmonyPatch(typeof(StageSceneManager), MethodType.Constructor)]
+    [HarmonyPatch(typeof(EventManager), MethodType.Constructor)]
     static class UISpawner
     {
         static void Postfix() => Main.Try(() => Main.SpawnUI());
