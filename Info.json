@@ -2,7 +2,7 @@
 	"Id": "DashboardUI",
 	"DisplayName": "DashboardUI",
 	"Author": "MMike17",
-	"Version": "1.2.0",
+	"Version": "1.2.1",
 	"GameVersion": "1.5,5",
 	"AssemblyName": "DashboardUI.dll",
 	"EntryMethod": "DashboardUI.Main.Load",
