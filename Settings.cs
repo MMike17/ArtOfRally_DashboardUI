@@ -30,14 +30,14 @@ namespace DashboardUI
             Right
         }
 
-        [Draw(DrawType.PopupList)]
+        [Draw(DrawType.Auto)]
         public ColorTag primaryColor = ColorTag.White;
-        [Draw(DrawType.PopupList)]
+        [Draw(DrawType.Auto)]
         public ColorTag secondaryColor = ColorTag.Cyan;
-        [Draw(DrawType.PopupList)]
+        [Draw(DrawType.Auto)]
         public ColorTag pointerColor = ColorTag.Red;
         [Space]
-        [Draw(DrawType.PopupList)]
+        [Draw(DrawType.Auto)]
         public DashboardOrientation uiOrientation = DashboardOrientation.Left;
         [Draw(DrawType.Slider, Min = -1, Max = 1, Precision = 3)]
         public float xPositionPercent = -0.79f;
